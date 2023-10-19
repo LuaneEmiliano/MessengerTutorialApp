@@ -9,9 +9,7 @@ import SwiftUI
 
 struct RegistrationView: View {
   
-  @State private var email = ""
-  @State private var password = ""
-  @State private var fullName = ""
+  @StateObject var viewModel = RegistrationViewModel()
   @Environment(\.dismiss) var dismiss
   
   var body: some View {
@@ -25,54 +23,54 @@ struct RegistrationView: View {
         .padding()
       //text field
       VStack {
-        TextField("Enter your email", text: $email)
+        TextField("Enter your email", text: $viewModel.email)
           .font(.subheadline)
           .padding(12)
           .background(Color(.systemGray6))
           .cornerRadius(10)
           .padding(.horizontal, 24)
-        TextField("Enter your full name", text: $fullName)
+        TextField("Enter your full name", text: $viewModel.fullName)
           .font(.subheadline)
           .padding(12)
           .background(Color(.systemGray6))
           .cornerRadius(10)
           .padding(.horizontal, 24)
-        SecureField("Enter your password", text: $password)
+        SecureField("Enter your password", text: $viewModel.password)
           .font(.subheadline)
           .padding(12)
           .background(Color(.systemGray6))
           .cornerRadius(10)
           .padding(.horizontal, 24)
       }
+      
+      Button {
+        Task { try await viewModel.createUser()}
+      } label: {
+        Text("Sign Up")
+          .font(.subheadline)
+          .padding(12)
+          .frame(maxWidth: .infinity)
+          .background(Color(.systemBlue))
+          .foregroundColor(.white)
+          .cornerRadius(10)
+          .padding(.horizontal, 24)
         
-        Button {
-          print("Handle login")
-        } label: {
-          Text("Sign Up")
-            .font(.subheadline)
-            .padding(12)
-            .frame(maxWidth: .infinity)
-            .background(Color(.systemBlue))
-            .foregroundColor(.white)
-            .cornerRadius(10)
-            .padding(.horizontal, 24)
-          
-        }
-        .padding(.vertical)
-        Spacer()
+      }
+      .padding(.vertical)
+      Spacer()
       Divider()
-        
-     Button {
-          dismiss()
-        } label: {
-          HStack(spacing: 3) {
-            Text("Already have an account?")
-            
-            Text("Sign In")
-              .fontWeight(.semibold)
-          }
-          .font(.footnote)
-          .padding(.vertical)
+      
+      Button {
+        dismiss()
+      } label: {
+        HStack(spacing: 3) {
+          Text("Already have an account?")
+          
+          Text("Sign In")
+            .fontWeight(.semibold)
+        }
+        .font(.footnote)
+        .padding(.vertical)
       }
     }
   }

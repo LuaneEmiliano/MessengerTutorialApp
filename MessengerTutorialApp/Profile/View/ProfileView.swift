@@ -11,6 +11,7 @@ import PhotosUI
 struct ProfileView: View {
   
   @StateObject var viewModel = ProfileViewModel()
+  let user: User
   
    var body: some View {
     VStack {
@@ -24,14 +25,11 @@ struct ProfileView: View {
               .frame(width: 80, height: 80)
               .clipShape(Circle())
           } else {
-            Image(systemName: "person.circle.fill")
-              .resizable()
-              .frame(width: 80, height: 80)
-              .foregroundColor(Color(.systemGray4))
+            CircularProfileImageView(user: user, size: .xLarge)
           }
         }
         
-        Text("Luna California")
+        Text(user.fullName)
           .font(.title2)
           .fontWeight(.semibold)
       }
@@ -53,6 +51,7 @@ struct ProfileView: View {
         }
         Section {
           Button("Log Out") {
+            AuthService.shared.signOut()
           }
           Button("Delete Account") {
           }
@@ -64,6 +63,6 @@ struct ProfileView: View {
 }
 struct ProfileView_Previews: PreviewProvider {
   static var previews: some View {
-    ProfileView()
+    ProfileView(user: User.MOCK_USER)
   }
 }
