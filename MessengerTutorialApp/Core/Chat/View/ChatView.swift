@@ -35,9 +35,10 @@ struct ChatView: View {
           }
         }
         //message
-        ForEach(0...15, id: \.self) { message in
-          ChatMessageCell(isFromCurrentUser: Bool.random())
-          
+        LazyVStack {
+          ForEach(viewModel.messages) { message in
+            ChatMessageCell(message: message)
+          }
         }
       }
       //message input view
@@ -59,8 +60,9 @@ struct ChatView: View {
         .padding(.horizontal)
       }
       .padding()
-      
-    }
+      }
+    .navigationTitle(user.fullName)
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
 
